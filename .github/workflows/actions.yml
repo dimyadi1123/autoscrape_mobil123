@@ -2,7 +2,7 @@ name: run automatic_scrape.py
 
 on:
   schedule:
-    - cron: "10 4 * * *" # At 11:10 on Monday 04.00. UTC
+    - cron: "10 19 */2 * *" # At 11:10 on Monday 04.00. UTC
   workflow_dispatch: # Allow manual triggering
 
 jobs:
@@ -33,7 +33,5 @@ jobs:
           git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
 
       - name: push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+        run: |
+          git push https://${{ secrets.PAT }}@github.com/${{ github.repository }}.git HEAD:main
