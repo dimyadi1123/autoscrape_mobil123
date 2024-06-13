@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repo content
-        uses: actions/checkout@v3 # checkout the repository content to github runner
+        uses: actions/checkout@v4 # checkout the repository content to github runner
 
       - name: setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11" # install the python version needed
 
@@ -33,6 +33,7 @@ jobs:
           git diff-index --quiet HEAD || git commit -m "Update data from scraping"
 
       - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.PAT }}
+        run: |
+          git push --force origin main
+        env:
+          PAT: ${{ secrets.PAT }}
