@@ -23,6 +23,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: execute py script # run main.py
+        env:
+          SOME_SECRET: ${{ secrets.SOME_SECRET }}
         run: python automatic_scrape.py
 
       - name: Commit files
@@ -32,8 +34,8 @@ jobs:
           git add -A
           git diff-index --quiet HEAD || git commit -m "Update data from scraping"
 
-      - name: Push changes
-        run: |
-          git push --force origin main
-        env:
-          PAT: ${{ secrets.PAT }}
+      - name: push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
