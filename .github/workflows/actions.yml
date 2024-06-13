@@ -25,16 +25,14 @@ jobs:
       - name: execute py script # run main.py
         run: python automatic_scrape.py
 
-      - name: commit files
+      - name: Commit files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
+          git diff-index --quiet HEAD || git commit -m "Update data from scraping"
 
       - name: Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-        run: |
-          git remote set-url origin https://dimyadi1123:${{ secrets.PAT }}@github.com/dimyadi1123/autoscrape_mobil123.git
-          git push origin HEAD:main
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.PAT }}
